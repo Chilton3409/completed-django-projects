@@ -118,9 +118,8 @@ USE_I18N = True
 
 USE_TZ = True
 #stripe secret key, use env var in production
-STRIPE_PUBLISHABLE_KEY = 'pk_live_51NgrfxKWxUGlBiLkhy6yQ3O138avivCWh2uU1kT1AwQ0DfEZLPG7EwG7dO7tEIVZFhx3SLLvaAzKOX99bnbiciuL00awjVDbfn'
-STRIPE_SECRET_KEY = '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'
-STRIPE_PRICE_ID = 'price_1NhD1LKWxUGlBiLkJv2WtX9S'
+
+
 
 #todo: getting email server up and running using mailchimp for smtp. for now send to the console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
