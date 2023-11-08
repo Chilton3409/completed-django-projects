@@ -1,0 +1,24 @@
+{% extends "store/base_generic.html" %}
+{% block content %}
+<br>
+<br>
+
+<br>
+<div class="container">
+    <h2 class='text-success'>Leave a Message</h2>
+<form action="" class="form-group bg-dark text-light" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table text-light table-striped table-sm">
+        {{form.as_table}}
+    </table>
+   
+    <input type="submit" class="btn btn-primary" value="Submit">
+    
+</form>
+<script>
+const table = document.querySelector('table');
+table.classList.add('table-responsive');
+</script>
+
+
+{% endblock %}

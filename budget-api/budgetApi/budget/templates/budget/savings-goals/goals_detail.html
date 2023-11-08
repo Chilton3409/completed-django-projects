@@ -1,0 +1,48 @@
+{% extends "store/base_generic.html"%}
+
+{% block content %}
+{% load static %}
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'css/grid.css' %}" />
+{% endblock %}
+
+{% if goals %}
+
+<div class="container text-center">
+  <h3>{{goals.name}}</h3>
+  <h4>Savings goals total: ${{yearly_goal}}</h4>
+  
+  <div class="row">
+    <div class="col-6 col-md-4"><a href="{% url 'budget:savings-goals-update' goals.id %}">Update Goal</a></div>
+    <div class="col-6 col-md-4"><a href="{% url 'budget:savings-goals-delete' goals.id %}">Delete Goal</a></div>
+    <div class="col-6 col-md-4">Goal amount: {{goals.goal}}</div>
+    <div class="col-6 col-md-4">Created on: {{goals.creation_date}}</div>
+    <div class="col-6 col-md-4">Deadline: ${{goals.deadline}}</div>
+ 
+
+    <div class="col-6 col-md-4">Monthly payment amount: ${{goals.how_much_each_month}}</div>
+    <div class="col-6 col-md-4">Months until deadline: {{goals.deadline_reached_month}}</div>
+
+
+
+
+  </div>
+  <div class="col-12 col-md-8"><a href="{% url 'budget:savings-goals'%}">Go back?</a></div>
+<br>
+</div>
+
+{% else %}
+<p> no savings goals created</p>
+
+{%endif%}
+
+
+
+
+{% endblock %}
+
+
+
+
+

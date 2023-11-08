@@ -1,0 +1,48 @@
+{% extends "store/base_generic.html"%}
+
+{% block content %}
+{% load static %}
+{% load humanize%}
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'css/grid.css' %}" />
+{% endblock %}
+
+{% if budget %}
+
+<div class="container text-center">
+  <h3>{{budget.name}}</h3>
+  
+  <div class="row">
+    <div class="col-6 col-md-4"><a href="{% url 'budget:budget_update' budget.id %}">Update Budget</a></div>
+    <div class="col-6 col-md-4"><a href="{% url 'budget:budget_delete' budget.id %}">Delete Budget</a></div>
+    <div class="col-6 col-md-4"
+    data-bs-toggle="tooltip" data-bs-placement="top"
+    title="You have to select the is monthly checkbox in order for this to work."
+    >yearly income: ${{budget.yearly_income|intcomma}}</div>
+ 
+
+    <div class="col-6 col-md-4"
+    data-bs-toggle="tooltip" data-bs-placement="top"
+    title="You have to select the is monthly checkbox in order for this to work."
+    >yearly expenses: ${{budget.yearly_expenses|intcomma}}</div>
+    <div class="col-6 col-md-4">Net Income: ${{budget.yearly_net|intcomma}}</div>
+    <div class="col-6 col-md-4">Projected taxable income ${{budget.yearly_tax|intcomma}}</div>
+
+
+
+  </div>
+  <div class="col-12 col-md-8"><a href="{% url 'budget:budget_list'%}">Go back?</a></div>
+<br>
+</div>
+
+{% else %}
+<p> no budgets have been created.</p>
+
+{%endif%}
+
+
+
+
+{% endblock %}
+

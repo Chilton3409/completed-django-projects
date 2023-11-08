@@ -1,0 +1,12 @@
+{% extends "store/base_generic.html"%}
+{% block content %}
+{% if budget %}
+{% for b in budget%}
+<li><a href="{{b.get_absolute_url}}">{{b.name}}</a></li>
+
+{% endfor %}
+
+{% else %}
+<p>no results found</p>
+{% endif %}
+{% endblock %}

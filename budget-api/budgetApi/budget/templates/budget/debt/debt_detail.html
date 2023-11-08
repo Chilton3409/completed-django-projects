@@ -1,0 +1,42 @@
+{% extends "store/base_generic.html"%}
+
+{% block content %}
+{% load static %}
+{% load humanize %}
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'css/grid.css' %}" />
+{% endblock %}
+
+{% if debt %}
+
+<div class="container text-center">
+  <h3>{{debt.name}}</h3>
+  
+  <div class="row">
+    <div class="col-6 col-md-4"><a href="{% url 'budget:debt-update' debt.id %}">Update Budget</a></div>
+    <div class="col-6 col-md-4"><a href="{% url 'budget:debt-delete' debt.id %}">Delete Budget</a></div>
+    <div class="col-6 col-md-4">Created on :{{debt.creation_date|naturalday}}</div>
+    <div class="col-6 col-md-4">Amount owed: {{debt.amount|intcomma}}</div>
+    <div class="col-6 col-md-4">Months until paid off: {{debt.month_counter}}</div>
+    <div class="col-6 col-md-4">Payments.{{debt.payment_maker|intcomma}}</div>
+
+
+
+  </div>
+  <div class="col-12 col-md-8"><a href="{% url 'budget:debt-list'%}">Go back?</a></div>
+<br>
+</div>
+
+{% else %}
+<p> no debt has been created.</p>
+
+{%endif%}
+
+
+
+
+{% endblock %}
+
+
+

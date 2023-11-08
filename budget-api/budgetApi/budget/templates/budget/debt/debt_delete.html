@@ -1,0 +1,67 @@
+{% extends "store/base_generic.html"%}
+{% block content %}
+
+{% load static %}
+
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'css/grid.css' %}" />
+{% endblock %}
+
+{% if user.is_subscribed %}
+
+
+
+<br>
+
+<div class="container text-center">
+    <h3>Delete DEBT: {{debt.name}}</h3>
+   
+    <div class="row">
+      <div class="col-12 col-md-8 fs-2">Created on: {{debt.creation_date}}</div>
+      <div class="col-12 col-md-8 fs-2">name: {{debt.deadline}}</div>
+            <div class="col-12 col-md-8 fs-2">name: {{debt.goal}}</div>
+
+
+
+      <div class="col-12 col-md-8 fs-2">name: {{debt.goal}}</div>
+
+   
+
+
+      
+
+
+
+  
+
+    <hr>
+    <form action="" method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        
+        {{form.as_table}}
+       
+        <div class="col-6 col-md-4"> <input class=" btn btn-danger" type="submit" value="Yes, delete."></div>
+        
+    </form>
+<script>
+  const table = document.querySelector('table');
+  table.classList.add('table-responsive')
+</script>
+
+
+  </div> <!-- /container -->
+
+</div>
+</div>
+{%else %}
+<p class="Danger">You are not subscribed and shouldn't here :()
+</p>
+{% endif%}
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "store/base_generic.html"%}
+
+{% block content %}
+<aside class='bg-dark'>
+    <ul class='text-light'>
+     
+        <li>budgets created:{{num_bud}}</li>
+        <li><a href="{% url 'budget:budget_list'%}">Budget List</a></li>
+
+    </ul>
+</aside>
+<article class='bg-dark container-fluid'>
+<section>
+    <p class="text-light">This website allows you create and manage budgets</p>
+    <ul class="text-light">
+        <li>Budgets</li>
+        <li>totals</li>
+        <li>how much withheld for taxes</li>
+    <li>savings</li>
+    <li>debt payment</li>
+        
+        
+    </ul>
+    <p class='text-light'>
+        this is a Budget tracker. You can upload and manage your budgets for each month as you pay bills and stuff.
+       
+
+    </p>
+    <p> This is just a part of my portfolio and not a real project.</p>
+</section>
+</article>
+
+
+{% endblock %}
+

@@ -1,0 +1,56 @@
+{% extends "store/base_generic.html"%}
+{% block content %}
+
+{% load static %}
+{% load humanize %}
+
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'css/grid.css' %}" />
+{% endblock %}
+
+
+
+
+<br>
+
+<div class="container text-center">
+    
+   
+    <div class="row">
+      <h3>Delete Budget: {{budget.name}}. <br> id: {{budget.id}}</h3>
+      <div class="col-12 col-md-8 fs-2">name: {{budget.name}}</div>
+      <div class="col-6 col-md-4">Income: ${{budget.income|intcomma}}</div>
+      <div class="col-6 col-md-4">Expenses: ${{budget.expenses|intcomma}}</div>
+      <div class="col-6 col-md-4">Created on: ${{budget.creation_date}}</div>
+      <div class="col-6 col-md-4">Total: ${{budget.get_total|intcomma}}</div>
+
+  
+
+    <hr>
+    <form class= action="" method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        
+        {{form.as_table}}
+       
+        <div class="col-6 col-md-4"> <input class="btn-danger" type="submit" value="Yes, delete."></div>
+        
+    </form>
+
+<script>
+const table = document.querySelector('table');
+table.classList.add('table-responsive');
+</script>
+
+  </div> <!-- /container -->
+
+</div>
+</div>
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "store/base_generic.html"%}
+{% load static %}
+{% block content %}
+
+
+
+
+{% block styles%}
+<link rel="stylesheet" href="{% static 'css/grid.css' %}" />
+{% endblock %}
+
+
+
+
+
+<br>
+
+<div class="container text-center">
+    <h3>Delete job: {{jobs.job_name}}. <br> id: {{savingsgoal.id}}</h3>
+   
+    <div class="row">
+      <div class="col-12 col-md-8 fs-2">name: {{savingsgoal.name}}</div>
+
+
+    <form action="" method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        
+        {{form.as_table}}
+       
+        <div class="col-6 col-md-4"> <input class="btn-danger" type="submit" value="Yes, delete."></div>
+        
+    </form>
+
+
+
+  </div> <!-- /container -->
+
+</div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

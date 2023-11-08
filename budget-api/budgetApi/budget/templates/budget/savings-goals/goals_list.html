@@ -1,0 +1,170 @@
+{% extends "store/base_generic.html"%}
+{% load static %}
+{% load humanize%}
+{% block scripts %}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9839365771799776"
+     crossorigin="anonymous"></script>
+     <script async src="https://fundingchoicesmessages.google.com/i/pub-9839365771799776?ers=1" nonce="Nx13D38jSzvkx8opu1YEQQ"></script><script nonce="Nx13D38jSzvkx8opu1YEQQ">(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
+
+
+<script>
+  // jquery function
+  $(document).ready(function(){
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var myChart = new Chart(ctx, {
+              type: 'pie',
+              data: {
+                  labels: [{%for data in goals%}'{{data.deadline}}',{%endfor%}], //loop through queryset, 
+                  datasets: [{
+                      label: 'current progress towards savings goal',
+                      data: [{%for data in goals%}{{data.how_much_each_month|intcomma}},{%endfor%}],
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)', 
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)',
+                      ],
+                      borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)',
+                      ],
+                      borderWidth: 1,
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+  });
+      });
+  </script>
+
+
+
+
+{% endblock scripts%}
+
+{% block content %}
+
+{% if goals %}
+
+
+
+
+<div class="d-flex flex-row-reverse bd-highlight">
+
+  <div class="p-2 bd-highlight text-info">
+     Net Income: ${{net_total|intcomma}}
+  </div>
+  <div class="p-2 bd-highlight text-danger">
+   Debt Total: {{debt_total|intcomma}}
+  </div>
+  <div class="p-2 bd-highlight text-success">
+    Savings Goals: ${{current_goal|intcomma}}
+  </div>
+  
+
+
+  
+</div>
+
+<table class="table table-responsive-md table-hover table-sortable text-center table-dark">
+    <thead class="thead-success text-center">
+        <tr class="text-center">
+         <th class="text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Click to sort by name"
+          >Name</th>
+        
+         <th class=" bg-info text-center"
+         data-bs-toggle="tooltip" data-bs-placement="left"
+   title="table row representing your savings goal dollar amount for a single line."
+         >Amount</th>
+
+  
+         <th class="bg-warning text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="This counts how many months until your goal's deadline is reached."
+          >Deadline Count</th>
+
+          <th class="bg-success text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Amount to save each month to reach your goal."
+          >SavePerMonth</th>
+   
+         <th class="text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Update goal information."
+          >Update</th>
+          <th class="text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Delete goal information."
+          >Delete</th>
+      
+        </tr>
+    </thead>
+
+        <tbody class="table-hover container-fluid text-center table-dark">
+{% for g in goals %}
+
+<td class="text-dark text-center"
+data-bs-toggle="tooltip" data-bs-placement="top"
+title="Click to inspect details for {{g.name}}"
+>
+  <button type="button" class="btn btn-dark">
+  <a class="nav-link" href="{{g.get_absolute_url}}">{{g.name}}</a>
+  </button>
+ 
+</td>
+
+
+
+
+<td class=' text-success text-center'>
+    {{g.goal|intcomma}}
+</td>
+<td class="text-warning"
+data-bs-toggle="tooltip" data-bs-placement="top"
+title="This is how many months until you reach the deadline for {{g.name}}"
+>{{g.deadline_reached_month}}</td>
+<td class="text-info"    data-bs-toggle="tooltip" data-bs-placement="top"
+title="This is how much you need to save each month to reach {{g.name}}"> ${{g.how_much_each_month|intcomma}}</td>
+
+<td class="bg-info text-center"
+   data-bs-toggle="tooltip" data-bs-placement="top"
+  title="This will delete budget {{g.name}}"><button class="btn btn-dark"><a class="btn btn-light" href="{% url 'budget:savings-goals-update' g.id%}">Update</a></button>
+</td>
+
+<td class="bg-warning text-center" >
+  <button type="button" class="btn btn-primary btn-outline-danger">
+    <a class="text-light" href="{% url 'budget:savings-goals-delete' g.id%}">Delete</a>
+  </button>
+</td>
+
+{% endfor%}
+</tbody>
+</table>
+<script src="{% static 'table_sort.js'%}"></script>
+
+<canvas id="myChart" width="1600" height="800"style="display: block; font: 22px" ></canvas>  
+
+
+
+
+
+{% else %}
+
+
+{% endif %}
+
+
+{% endblock %}

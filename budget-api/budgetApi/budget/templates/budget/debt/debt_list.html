@@ -1,0 +1,178 @@
+{% extends "store/base_generic.html"%}
+{% load static %}
+{% load humanize %}
+{% block scripts %}
+
+<script>
+  // jquery function
+  $(document).ready(function(){
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var myChart = new Chart(ctx, {
+              type: 'pie',
+              data: {
+                  labels: [{%for data in qs%}'{{data.deadline|naturalday}}',{%endfor%}], //loop through queryset, 
+                  datasets: [{
+                      label: 'amount for each budget',
+                      data: [{%for data in qs%}{{data.amount}},{%endfor%}],
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)', 
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)',
+                      ],
+                      borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)',
+                      ],
+                      borderWidth: 1,
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+  });
+      });
+  </script>
+{% endblock scripts%}
+
+
+{% block content %}
+{% if debt%}
+<div class="d-flex flex-row-reverse bd-highlight">
+
+    <div class="p-2 bd-highlight text-info text-primary">
+       Net Income: ${{overall_total|intcomma}}
+    </div>
+    <div class="p-2 bd-highlight text-warning">
+      Debt Total: ${{debt_total|intcomma}}
+    </div>
+    <div class="p-2 bd-highlight text-success">
+        Savings Goal: ${{savings_goal|intcomma}}
+      </div>
+  
+  </div>
+
+
+<table class="table table-responsive-sm table-info table-hover table-dark table-sortable">
+
+<thead class="thead-dark text-center">
+
+    <tr class="text-center">
+        <th data-bs-toggle="tooltip" data-bs-placement="left"
+        title="Clink {{d.name}} for more information about this specific item."
+              >Name</th>
+            
+        </th>
+        <th class="text-info" data-bs-toggle="tooltip" data-bs-placement="left"
+        title="Amount of money you owe."
+              >amount</th> 
+            
+        </th>
+        <th class="text-warning"
+        data-bs-toggle="tooltip" data-bs-placement="left"
+        title="Deadline to pay."
+              >Deadline</th>
+
+    <th class="text-success"
+    data-bs-toggle="tooltip" data-bs-placement="left"
+        title="This calculates how much you have to pay monthly before your deadline."
+              >Payments</th>
+              <th class="text-info"
+    data-bs-toggle="tooltip" data-bs-placement="left"
+        title="This calculates how much you long until your deadline is reached."
+        
+              >Month Counter</th>
+              
+    <th
+    data-bs-toggle="tooltip" data-bs-placement="left"
+        title="Update the information for this line"
+              >Update</th>
+    <th
+    data-bs-toggle="tooltip" data-bs-placement="left"
+        title="Delete this line from your ledger."
+              >Delete</th>
+
+
+    </tr>
+
+</thead>
+
+</tbody>
+
+{% for d in debt%}
+
+<tr>
+
+    <td>
+        <button class="btn btn-dark">
+            <a class="btn btn-info bg-primary text-light bd-highlight" href="{{d.get_absolute_url}}">{{d.name}}</a></button>
+        </div>
+       
+    </td>
+
+
+
+
+
+
+    <td class="text-info">
+        ${{d.amount|intcomma}}
+    </td>
+  <td class="text-warning">{{d.deadline|naturalday}}</d>
+  
+    
+    <td class="text-success">${{d.payment_maker|intcomma}}</td>
+    <td class="text-info">{{d.month_counter}}</td>
+    <td class="text-center">
+        <div class="col-12 col-md-8"  data-bs-toggle="tooltip" data-bs-placement="top"
+        title="This will update budget {{d.name}}'s information"><button class="btn btn-info"><a class="nav-link" href="{% url 'budget:debt-update' d.id%}">Update</a></button></div>
+      </td>
+      <td class="bg-danger text-center">
+        <div class="col-12 col-md-8"  data-bs-toggle="tooltip" data-bs-placement="top"
+        title="This will update budget {{d.name}}'s information"><button class="btn btn-danger"><a class="nav-link" href="{% url 'budget:debt-delete' d.id%}">Delete</a></button></div>
+      </td>
+
+</tr>
+
+
+
+
+{% endfor %}
+</tbody>
+</table>
+<script src="{% static 'table_sort.js'%}"></script>
+<!---->
+
+<canvas class="fs-2" id="myChart" width="1600" height="800"style="display: block; font: 40px" ></canvas>  
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9839365771799776"
+crossorigin="anonymous"></script>
+<!-- first-ad-try -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-9839365771799776"
+data-ad-slot="5402037972"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+
+{% else %}
+
+
+{% endif %}
+
+{% endblock %}

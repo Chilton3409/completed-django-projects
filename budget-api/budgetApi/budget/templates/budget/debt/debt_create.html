@@ -1,0 +1,68 @@
+{% extends "store/base_generic.html"%}
+
+{% block content %}
+
+
+{% if user.is_subscribed %}
+<br>
+<div class="container-fluid text-center">
+
+  
+
+    
+<form action="" class="form-inline-responsive bg-dark text-light" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table text-light btn-outline-info table-striped table-lg bg-dark">
+        {{form.as_table}}
+    </table>
+   
+    <input type="submit" class="btn btn-primary" value="Submit">
+    
+    
+</form>
+<script>
+  const table = document.querySelector('table');
+
+  
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9839365771799776"
+crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+style="display:block; text-align:center;"
+data-ad-layout="in-article"
+data-ad-format="fluid"
+data-ad-client="ca-pub-9839365771799776"
+data-ad-slot="4745516138"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+<script>
+    const name = document.getElementById('id_name');
+    const income = document.getElementById('id_amount');
+    date = document.querySelector('#id_deadline');
+    date.setAttribute("type", "date");
+    
+    
+    
+    income.classList.add("btn-outline-success");
+    name.classList.add("btn-outline-success");
+    name.focus();
+    </script>
+
+
+
+
+{%else %}
+<p>Not subscribed</p>
+{%endif%}
+{% endblock %}

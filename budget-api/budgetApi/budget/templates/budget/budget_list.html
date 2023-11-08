@@ -1,0 +1,217 @@
+{% extends "store/base_generic.html"%}
+{% load static %}
+{% load humanize%}
+{% block scripts %}
+
+<script>
+  // jquery function
+  $(document).ready(function(){
+          var ctx = document.getElementById('myChart').getContext('2d');
+          var myChart = new Chart(ctx, {
+              type: 'pie',
+              data: {
+                  labels: [{%for data in qs%}'{{data.name}}',{%endfor%}], //loop through queryset, 
+                  datasets: [{
+                      label: 'amount for each budget',
+                      data: [{%for data in qs%}{{data.get_total|intcomma}},{%endfor%}],
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)', 
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)',
+                      ],
+                      borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)',
+                      ],
+                      borderWidth: 1,
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+  });
+      });
+  </script>
+
+
+
+
+{% endblock scripts%}
+
+
+{% block content %}
+
+
+{% if budget %}
+<div id="budget">
+
+
+   
+   <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Tutorial</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-dark text-light">
+          <span>
+          <h3 class="lead text-info">
+          Use the tab key for a better experience. 
+          </h3>
+          <h3 class="text-success">
+          Click the table headers to sort your budget's by anything you like.
+          </h3>
+          Your newly created budgets appear in the table below as a clickable button.
+          There you can take a different look at your budgets details
+
+          
+          Don't forget to scroll down to your interactive pie chart. It reflects your current budget
+          as you add or delete budgets.
+          It shows you the percentage of your running total highlighted in blue on the top right of the planner interface.
+
+          By clicking the update or delete links, you can add or remove budgets from your planner
+
+        Try entering 0 for income or expenses and using the interactive chart to get a complete picture of your finacial situation.
+        </span>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  
+  </div>
+  <div class="d-flex flex-row-reverse bd-highlight">
+
+  <form class="form-inline mt-2 mt-md-0" action="{% url 'budget:search' %}" method="get">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search budgets" aria-label="Search" name="q">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="search">Search</button>
+  </form>
+</div>
+<div class="d-flex flex-row-reverse bd-highlight">
+  <div class="p-2 bd-highlight text-primary"
+    data-bs-toggle="tooltip" data-bs-placement="top"
+    title="Net income is all of your income - expenses."
+    >Current Net Income: ${{overall_total|intcomma}}</div>
+
+    <div class="p-2 bd-highlight text-warning"
+    data-bs-toggle="tooltip" data-bs-placement="top"
+    title="This is your current debt total"
+    >Current Debt Total: ${{debt_total|intcomma}}</div>
+
+    <div class="p-2 bd-highlight text-success"
+    data-bs-toggle="tooltip" data-bs-placement="top"
+    title="This is your savings goal."
+    >Your current savings goal: ${{savings_goal|intcomma}}</div>
+
+    
+   
+ 
+</div>
+
+  <table class="table table-responsive-md table-hover table-sortable text-center table-dark">
+      <thead class="thead-dark text-center">
+        <tr class="text-center">
+          
+          <th class="bg-info text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Click to sort by name"
+          >Name</th>
+          <th class="bg-success text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Click to sort by income amount"
+          >Income</th>
+          <th class="bg-warning text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Click to sort by Expense amount"
+          >Expenses</th>
+          <th class="bg-primary text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="total for this budget, click to sort table by total"
+          >total</th>
+          
+          <th class="bg-success text-center"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+    title="Update this budget's information"
+          >Update</th>
+          <th class="bg-danger text-center"
+          data-bs-toggle="tooltip" data-bs-placement="top"
+    title="Delete this budget."
+          >Delete</th>
+
+        </tr>
+      </thead>
+      <tbody class="container-fluid text-center">
+{% for b in budget%}
+<td class="bg-dark text-center">
+    <div class="col-12 col-md-8"
+    data-bs-toggle="tooltip" data-bs-placement="top"
+    title="Click the button to view more details"
+    ><button class="btn btn-dark"><a class="btn btn-info bg-primary text-light bd-highlight" href="{{b.get_absolute_url}}">{{b.name}}</a></button></div>
+</td>
+<td class="bg-success text-center">
+    <div class="col-12 col-md-8 text-light">{{b.income|intcomma}}</div>
+</td>
+<td class="bg-warning text-center">
+    <div class="col-12 col-md-8">{{b.expenses|intcomma}}</div>
+</td>
+<td class="bg-primary text-center">
+    <div class="col-12 col-md-8">{{b.get_total|intcomma}}</div>
+</td>
+
+<td class="bg-success text-center">
+  <div class="col-12 col-md-8"  data-bs-toggle="tooltip" data-bs-placement="top"
+  title="This will update budget {{b.name}}'s information"><button class="btn btn-dark"><a class="btn btn-success" href="{% url 'budget:budget_update' b.id%}">Update</a></button></div>
+</td>
+<td class="bg-danger text-center">
+  <div class="col-12 col-md-8"  data-bs-toggle="tooltip" data-bs-placement="top"
+  title="This will delete budget {{b.name}}"><button class="btn btn-dark"><a class="btn btn-light" href="{% url 'budget:budget_delete' b.id%}">Delete</a></button></div>
+</td>
+</tr>
+{%endfor%}
+
+</tbody>
+</table>
+  <script src="{% static 'table_sort.js'%}"></script>
+  <canvas id="myChart" width="1600" height="800"style="display: block; font: 22px" ></canvas>  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9839365771799776"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-9839365771799776"
+     data-ad-slot="4745516138"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+{% else %}
+<p class="lead text-info"> Sign up and start your budgeting journey today!</p>
+
+{%endif%}
+
+
+</div>
+{% endblock%}

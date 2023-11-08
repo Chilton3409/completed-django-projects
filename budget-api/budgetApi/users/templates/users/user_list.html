@@ -1,0 +1,35 @@
+ {% extends 'store/base_generic.html' %}
+ {%load humanize%}
+
+
+ {% block content %}
+{% if user%}
+<p>Sanity check</p>
+{% for u in user %}
+
+
+<li>{{u.email}}</li>
+<li>Last Login: {{u.last_login|naturaltime}}</li>
+<li>Subscribed: {{u.is_subscribed}}</li>
+
+
+<li><a href="{% url 'users:user-update' u.id%}">Update</li>
+    <li><a href="{% url 'users:user-delete' u.id%}">Delete</li>
+
+{% endfor %}
+
+
+
+<div class="container-fluid">
+
+</div>
+
+{%else %}
+
+<p>No users</p>
+
+
+
+{%endif %}
+
+ {% endblock %}
