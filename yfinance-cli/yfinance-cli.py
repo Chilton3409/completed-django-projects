@@ -10,15 +10,20 @@ class Company():
         self.ticker = input("Enter a Company's stock symbol to start inspecting their financials\n").upper()
         self.my_symbols = []
         
-    def prompt(self):
+    async def prompt(self):
         try:
-            choice = int(input("press 1 to add this symbol to my symbols\n"))
+            choice = int(input("press 1 to add this symbol to my symbols\n. Press 2 to scan again\n, press any other key to exit\n"))
 
             if choice == 1:
                 self.my_symbols.append(self.ticker)
                 print(self.my_symbols)
+            if choice == 2:
                 
-                
+                y = Company()
+                await y.arg()
+                #await y.prompt()
+            else:
+                return KeyError
         except:
             return KeyError
 
@@ -30,7 +35,7 @@ class Company():
             'last year high:', sym.fast_info['yearHigh'], 'last year low:', sym.fast_info['yearLow']
             )
         print('year change:', sym.fast_info['yearChange'], 'two hundred day average:', sym.fast_info['twoHundredDayAverage'])
-        self.prompt()      
+            
         
     def get_financials(self):
         sym = yf.Ticker(str(self.ticker))
@@ -69,13 +74,14 @@ class Company():
         self.arguments.add_argument('-i', '--info', action='store_true', help='gather basic information about the currently tracked company')
 
         args = self.arguments.parse_args()
-
+        
         if args.financials:
             self.get_financials()
-            self.prompt()
+            
 
         if args.balancesheet:
             self.get_balanceSheet()
+           
 
         if args.history:
             self.get_historical_metadata()
@@ -88,11 +94,15 @@ class Company():
 
         if args.info:
             self.get_basic_info()
+        else:
+            await self.prompt()
 
 async def main():
     print("-----calling main, gathering company financial data")
     x = Company()
     await x.arg()
+    await x.prompt()
+    
 
 if __name__=='__main__':
     with Pool(5) as p:
