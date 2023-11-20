@@ -3,7 +3,7 @@
 from multiprocessing import Pool
 import argparse
 import yfinance as yf
-
+import asyncio
 class Company():
     def __init__(self):
         self.arguments = argparse.ArgumentParser(description="Search through a companies financials by entering their ticker symbol")
@@ -17,6 +17,7 @@ class Company():
             if choice == 1:
                 self.my_symbols.append(self.ticker)
                 print(self.my_symbols)
+                
                 
         except:
             return KeyError
@@ -59,7 +60,7 @@ class Company():
         sym = yf.Ticker(str(self.ticker))
         print(sym.get_cash_flow(pretty=True))
 
-    def arg(self):
+    async def arg(self):
         self.arguments.add_argument('-f', '--financials', action='store_true', help='this will gather a companies financials'),
         self.arguments.add_argument('-b', '--balancesheet', action='store_true', help='retrieve the balance sheet for the company you are searching for')
         self.arguments.add_argument('-m', '--history', action='store_true', help='this will retrieve the companies historical metadata')
@@ -71,6 +72,7 @@ class Company():
 
         if args.financials:
             self.get_financials()
+            self.prompt()
 
         if args.balancesheet:
             self.get_balanceSheet()
@@ -87,11 +89,11 @@ class Company():
         if args.info:
             self.get_basic_info()
 
-def main():
+async def main():
     print("-----calling main, gathering company financial data")
     x = Company()
-    x.arg()
+    await x.arg()
 
 if __name__=='__main__':
     with Pool(5) as p:
-        p.map(main(), [])
+        p.map(asyncio.run(main()), [])
